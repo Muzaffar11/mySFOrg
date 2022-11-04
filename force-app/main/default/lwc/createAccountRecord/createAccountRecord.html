@@ -1,0 +1,11 @@
+<template>
+    <lightning-card title="Create Account" icon-name="custom:custom57"></lightning-card>
+        <div class="slds-grid slds-wrap slds-p-around_small">
+
+            <!-- Create a record with Lightning Data Service -->
+            <div class="slds-col">
+                <lightning-record-form object-api-name={accountObject} fields={myFields} onsuccess={handleSuccess} onsubmit={handleSubmit}> mode="edit">
+                </lightning-record-form>
+            </div>
+</div>
+</template>

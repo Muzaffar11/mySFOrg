@@ -1,0 +1,93 @@
+<apex:page id="pg"  showheader="true" controller="CurrencyConverterController" docType="html-5.0">
+
+<apex:slds />
+  <apex:form id="frm">
+   <apex:pageMessages id="PgErrorInvoice" ></apex:pageMessages> 
+   
+   
+  
+  <div class="slds-form--stacked">
+	<div class="slds-grid slds-wrap slds-m-bottom--medium">
+		<div class="slds-col--padded slds-size--1-of-1 slds-small-size--1-of-1 slds-medium-size--1-of-5 container--right slds-m-top--small">
+  		   <div class="slds-form-element">
+					<label class="slds-form-element__label">Currency Count</label> 
+  						<div class="slds-form-element__control">
+				   			  <apex:inputText value="{!CurCount}" id="txtCount2" styleclass="slds-textarea"/> 
+				   		</div>	
+   		  </div>
+  		</div>
+	
+  		<div class="slds-col--padded slds-size--1-of-1 slds-small-size--1-of-1 slds-medium-size--1-of-5 container--right slds-m-top--small">
+  		   <div class="slds-form-element">
+					<label class="slds-form-element__label">Currency Code From</label> 
+  						<div class="slds-form-element__control">
+				   			<apex:selectList value="{!selectedCurrFrom}" size="1" Id="cboCurrFrom" styleclass="slds-select" >
+				    			<apex:selectOptions value="{!CurrFrom}"/>
+				   			</apex:selectList>
+				   		</div>	
+   		  </div>
+  		</div> 
+  		<div class="slds-col--padded slds-size--1-of-1 slds-small-size--1-of-1 slds-medium-size--1-of-5 container--right slds-m-top--small">
+  		   <div class="slds-form-element">
+					<label class="slds-form-element__label">Currency Code To</label> 
+  						<div class="slds-form-element__control">
+				   			<apex:selectList value="{!selectedCurrTo}" size="1" Id="cboCurrTo" styleclass="slds-select" >
+				    			<apex:selectOptions value="{!CurrTo}"/>
+				   			</apex:selectList>
+				   		</div>	
+   		  </div> 
+  		</div>
+  		 	
+  		<div class="slds-col--padded slds-size--1-of-1 slds-small-size--1-of-1 slds-medium-size--1-of-5 container--right slds-m-top--small">
+  		   <div class="slds-form-element">
+					<label class="slds-form-element__label"></label>  
+  						<div class="slds-form-element__control">
+				   			<apex:commandbutton value="Convert" action="{!Calculate}"  styleClass="slds-button slds-button_brand" reRender="frm" ></apex:commandbutton>
+				   		</div>	
+   		  </div>
+  		</div>
+  		
+  		
+  		
+  		
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	 
+  	
+  	
+  	
+  	
+  	</div>
+  </div>
+  
+  
+  <apex:Outputpanel id="CurrencyRatePanel" >
+  <apex:Outputpanel >
+  		<div class="slds-col--padded slds-size--1-of-1 slds-small-size--1-of-1 slds-medium-size--1-of-5 container--right slds-m-top--small">
+  		   <div class="slds-form-element">
+					<label class="slds-form-element__label">Conversion Rate</label> 
+  						<div class="slds-form-element__control">
+				   			  <apex:inputText value="{!TotalAmount}" id="txtTotalAmount" styleclass="slds-textarea"/>
+				   		
+				   		</div>	
+   		  </div>
+  		</div>
+  	</apex:Outputpanel>	
+  </apex:Outputpanel>
+  
+  
+  
+  
+   	 
+    </apex:form>
+  
+</apex:page>

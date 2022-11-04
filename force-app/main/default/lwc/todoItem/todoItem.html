@@ -1,0 +1,13 @@
+<template>
+    {itemName}
+
+    <template if:true={areDetailsVisible}>
+        These are the details!
+    </template>
+
+    <template for:each={contacts} for:item="contact">
+        <p key={contact.Id}>
+            {contact.Name}
+        </p>
+    </template>
+</template>

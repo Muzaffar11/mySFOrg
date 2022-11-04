@@ -1,0 +1,16 @@
+<template>
+    <lightning-card title="TrackPropertyDemo" icon-name="standard:account">
+        hello {trackParam}
+    </lightning-card>
+    <lightning-card title="ApiPropertyDemo" icon-name="standard:account">
+        hello {apiParam}
+    </lightning-card>
+    
+    <lightning-card title="NonReactiveDemo" icon-name="standard:account">
+        hello {noReactiveProp}
+    </lightning-card>
+
+    <div>
+        <lightning-button label="Click MC" onclick={handleparamValues}></lightning-button>
+    </div>
+</template>

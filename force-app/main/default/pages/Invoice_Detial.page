@@ -1,0 +1,135 @@
+<apex:page id="InvoiceDetail" standardController="NewInvoice__c"  showheader="true" extensions="InvoiceDetailController" docType="html-5.0">
+  <!-- Begin Default Content REMOVE THIS -->
+
+  <style>
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+</style>
+  
+  
+  <apex:form id="frm">
+  <apex:pageMessages id="PgErrorInvoice" ></apex:pageMessages>
+    <apex:pageblock tabStyle="Account" id="InvoicePg" mode="detail" title="Invoice Detail">
+
+       <apex:pageBlockSection title="Invoice Details" columns="1" ShowHeader="false" collapsible="false">
+            <apex:outputField style="text-align:left" value="{!InvoiceDetail.Name}"/>
+            <apex:outputField style="text-align:left" value="{!InvoiceDetail.Invoice_Amount__c}"/>
+            <apex:outputField style="text-align:left" value="{!NewInvoice__c.Invoice_Date__c}" />
+            <apex:outputField style="text-align:left" value="{!NewInvoice__c.Paid_Amount__c}" />
+            <apex:outputField style="text-align:left" value="{!NewInvoice__c.Remaining_Amount__c}" />
+            <apex:outputField style="text-align:left" value="{!NewInvoice__c.Status__c}" />
+            <apex:outputField style="text-align:left" value="{!NewInvoice__c.TPaid_Amount__c}" />
+        </apex:pageblocksection>
+    </apex:pageblock>
+    
+    <!-- Page Block Table -->
+    
+    <apex:pageBlock id="PaymentPg" title="Payment Detail">
+        <apex:pageBlockTable value="{!InvoicePayList}" var="item">
+           <apex:column value="{!item.Name}"/>
+           <apex:column value="{!item.Payment_Amount__c}"/>
+           <apex:column value="{!item.Payment_Date__c}"/>
+           <apex:column value="{!item.Status__c }"/>
+           <apex:column value="{!item.Rating__c }"/>
+           
+        </apex:pageBlockTable>
+    </apex:pageBlock> 
+    
+    <!--apex:repeat List View --> 
+
+    <apex:pageMessages id="PgError" ></apex:pageMessages>
+
+    <apex:outputPanel id="infoPanel">
+       <apex:outputPanel rendered="{!InvoicePayList.size>0}" > 
+
+      <table class="table table-bordered table-striped">
+         <tr>
+            <th><div class="pull-right">Payment Id</div></th>
+            <th class="text-center">Payment Amount</th>
+            <th class="text-center">Payment Date</th>
+            <th class="text-center">Status</th>
+             <th class="text-center">Rating</th>
+            <th class="text-center">Action</th>
+              
+         </tr>
+        <apex:repeat value="{!InvoicePayList}" var="pay"> 
+   
+       <tr>
+         <th><apex:outputText value="{!pay.Name}" id="PID"/> </th>
+         <th> <apex:outputText value="{!pay.Payment_Amount__c}" id="PAMount"/></th>
+         <th> <apex:outputText value="{!pay.Payment_Date__c}" id="PaymentDate"/></th>
+         <th> <apex:outputText value="{!pay.Status__c }" id="PaymentStatus"/></th>
+         <th> <apex:outputText value="{!pay.Rating__c }" id="PaymentRating"/></th>
+         <th> <apex:commandLink action="{!editPay}" value="Edit" ReRender="contentToToggle">
+              <apex:param name="editid" value="{!pay.id}" assignto="{!PEditId}"/>
+              </apex:commandLink> &nbsp; | &nbsp;
+              
+              <apex:commandLink action="{!deleteOpp}" value="Delete" rerender="PgError">
+              <apex:param name="deleteid" value="{!pay.id}" assignto="{!PEditId}"/>
+              </apex:commandLink>
+         </th>
+              
+        
+        </tr>
+         
+     
+       </apex:repeat>
+        </table>
+     </apex:outputPanel>
+     </apex:outputPanel>
+     
+ 
+
+    <br/>
+        <apex:commandbutton value="Add Payment" action="{!toggleContent}" ReRender="contentToToggle"></apex:commandbutton>
+        
+        <apex:outputPanel Id="contentToToggle" >
+         <apex:outputPanel rendered="{!showContent}" >
+          <div>
+           <apex:pageBlock title="My Content" mode="Add">
+            <apex:pageBlockButtons >
+             <apex:commandButton action="{!save}" value="Save" Rendered="{!btnSave}" ReRender="InvoicePg,infoPanel,PaymentPg,PgErrorInvoice"/>
+             <apex:commandButton action="{!update1}" value="Update" Rendered="{!btnUpdate}" ReRender="InvoicePg,infoPanel,PaymentPg,PgErrorInvoice" >
+              
+             </apex:commandButton>
+             
+            </apex:pageBlockButtons>
+            
+            <apex:pageBlockSection title="My Content Section" columns="2">
+              <apex:outputText value="Payment Amount : "/>
+              <apex:inputText value="{!PAmount}" id="txtAmount"/>
+            
+              <apex:outputText value="Payment Date : "/>
+              <apex:input value="{!PaymentDate}" type="date" id="demo"  >  </apex:input> 
+             
+              <apex:outputText value="Payment Status: "/>
+              <apex:selectList value="{!Status}" multiselect="false" size="1">
+               <apex:selectOption itemValue="Pending" itemLabel="Pending"/>
+               <apex:selectOption itemValue="Paid" itemLabel="Paid"/>
+              </apex:selectList>
+
+ 			 <apex:outputText value="Payment Rating : "/>
+              <apex:inputText value="{!Rating}" id="txtRating"/>
+
+           </apex:pageBlockSection>
+        </apex:pageBlock>
+
+        </div>
+        </apex:outputPanel> 
+        </apex:outputPanel> 
+
+  </apex:form>
+  
+</apex:page>

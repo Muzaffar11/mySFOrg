@@ -1,0 +1,24 @@
+<template>
+    <lightning-card title="FetchUpdateDeleteRecord" icon-name="standard:record">
+        <div class="slds-m-around_medium">
+            <template for:each={accountList} for:item="accountObj">
+                <template for:each={accountObj.Contacts} for:item="relatedContactObj">
+                <lightning-layout key={relatedContactObj.Id} class="slds-m-vertical_x-small">
+                    <lightning-layout-item padding="horizontal-small">
+                        <lightning-input type="text" label="" name="input1" value={relatedContactObj.FirstName} onchange={onFirstNameChange}></lightning-input>
+                    </lightning-layout-item>
+                    <lightning-layout-item>
+                        <lightning-input type="text" label="" name="input1" value={relatedContactObj.LastName} onchange={onLastNameChange}></lightning-input>
+                    </lightning-layout-item>
+                    <lightning-layout-item padding="horizontal-small" class="slds-align-bottom">
+                        <lightning-button-icon icon-name="utility:record_update" onclick={updateContact} title ="Update Record" data-id={accountObj.Id} data-recordid={relatedContactObj.Id}></lightning-button-icon>
+                    </lightning-layout-item>
+                    <lightning-layout-item padding="horizontal-small" class="slds-align-bottom">
+                        <lightning-button-icon icon-name="utility:record_delete" onclick={deleteContact} title="Delete Record"  data-id={accountObj.Id} data-recordid={relatedContactObj.Id}></lightning-button-icon>
+                    </lightning-layout-item>
+                </lightning-layout>
+                </template>
+            </template>
+        </div>
+    </lightning-card>
+</template>

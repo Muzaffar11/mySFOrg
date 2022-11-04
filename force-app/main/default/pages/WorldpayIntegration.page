@@ -1,0 +1,60 @@
+<apex:page controller="WorldpayApi"  showheader="false" sidebar="false" standardStylesheets="false" cache="false">
+    <script src="https://cdn.worldpay.com/v1/worldpay.js" type="text/javascript"></script> 
+
+
+
+
+
+    
+<apex:form >
+   <div class="row">
+       <div class="col-md-4 " >
+                <label>Card Holder Name  <span class="required">*</span></label>
+                <apex:inputtext value="{!name}" id="txtname" styleClass=" form-control" />
+                </div>
+                 
+               <div class="col-md-4 " >
+                <label>Amount <span class="required">*</span></label>
+                <apex:inputtext value="{!Amount}" id="txtTotalAmount2" styleClass=" form-control" />
+                </div>
+       
+            <div class="col-md-4 " id="CREDIT_INPUT_05">
+                <label>Card Number <span class="required">*</span></label>
+                <apex:inputtext value="{!CreditcardNo}" id="txtCard_Number" styleClass=" form-control" />
+                </div>
+                <div class="col-md-4" id="CREDIT_INPUT_04">
+                <label>Expiry month <span class="required">*</span></label>
+                    <apex:selectList value="{!ExpiryMonth}" size="1" >
+                    <apex:selectOption itemValue="01" itemLabel="01"/>
+                    <apex:selectOption itemValue="02" itemLabel="02"/>
+                    <apex:selectOption itemValue="03" itemLabel="03"/>
+                    <apex:selectOption itemValue="04" itemLabel="04"/>
+                    <apex:selectOption itemValue="05" itemLabel="05"/>
+                    <apex:selectOption itemValue="06" itemLabel="06"/>
+                    <apex:selectOption itemValue="07" itemLabel="07"/>
+                    <apex:selectOption itemValue="08" itemLabel="08"/>
+                    <apex:selectOption itemValue="09" itemLabel="09"/>
+                    <apex:selectOption itemValue="10" itemLabel="10"/>
+                    <apex:selectOption itemValue="11" itemLabel="11"/>
+                    <apex:selectOption itemValue="12" itemLabel="12"/>
+                </apex:selectList>
+                </div>
+                <div class="col-md-4 " id="CREDIT_INPUT_03">
+                    <label>Expiry year <span class="required">*</span></label>
+                         <apex:inputtext value="{!ExpiryYear}" id="txtExpiryYear" styleClass=" form-control" />
+            
+                <label></label>
+                </div>
+                <div class="col-md-4 mb-3" id="CREDIT_INPUT_02">
+                <label>CVV2 <span class="required">*</span></label>
+                    <apex:inputtext value="{!cvc}" id="txtCVV2" styleClass="cssInputFields" />
+                </div>
+     </div>
+              
+              <div class="row ">       
+                     <apex:commandButton Id="Save" value="GIVE NOW" action="{!save}" styleClass="btn btn-primary  btn-lg btn-block" />
+              </div> 
+                    
+       </apex:form>   
+     
+</apex:page>

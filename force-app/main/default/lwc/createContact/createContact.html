@@ -1,0 +1,48 @@
+<template>
+  <lightning-card title="HelloWorld" icon-name="custom:custom14">
+    <div class="slds-m-around_medium">
+      <p>Hello, {greeting}!</p>
+      <lightning-input
+        label="Name"
+        value={greeting}
+        onchange={changeHandler}
+      ></lightning-input>
+    </div>
+  </lightning-card>
+
+  <!-- <lightning-record-edit-form
+    record-id={recordId}
+    object-api-name="Contact"
+    onsuccess={handleSuccess}
+    onsubmit={handleSubmit}
+  >
+    <lightning-messages> </lightning-messages>
+    <lightning-output-field field-name="AccountId"> </lightning-output-field>
+    <lightning-input-field field-name="FirstName"> </lightning-input-field>
+    <lightning-input-field field-name="LastName"> </lightning-input-field>
+    <lightning-input-field field-name="Email"> </lightning-input-field>
+    <lightning-input-field field-name="Loan_Amount__c"> </lightning-input-field>
+    <lightning-button
+      class="slds-m-top_small"
+      variant="brand"
+      type="submit"
+      name="update"
+      label="Update"
+    >
+    </lightning-button>
+  </lightning-record-edit-form> -->
+
+  <lightning-record-edit-form object-api-name="Contact" onsuccess={handleSuccess} onsubmit={handleSubmit}>
+    <lightning-messages> </lightning-messages>
+    <lightning-input-field field-name="AccountId"></lightning-input-field>
+    <lightning-input-field field-name="FirstName"></lightning-input-field>
+    <lightning-input-field field-name="LastName"></lightning-input-field>
+    <lightning-input-field field-name="Email"></lightning-input-field>
+    <lightning-input-field field-name="Loan_Amount__c"> </lightning-input-field>
+    <lightning-button
+      class="slds-m-top_small"
+      type="submit"
+      label="Create Contact" >
+    </lightning-button>
+  </lightning-record-edit-form>
+</template>

@@ -1,0 +1,8 @@
+<apex:page showHeader="false" >
+  <!-- Begin Default Content REMOVE THIS -->
+  <h1>Congratulations</h1>
+  This is your new Page
+  
+  <apex:image id="theImage" value="https://developer.salesforce.com/files/salesforce-developer-network-logo.png" width="220" height="55"/>
+  <!-- End Default Content REMOVE THIS -->
+</apex:page>

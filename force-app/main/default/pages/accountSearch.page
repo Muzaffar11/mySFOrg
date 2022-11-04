@@ -1,0 +1,8 @@
+<apex:page controller="AccountSearchController" docType="html-5.0">
+<!-- Begin Default Content REMOVE THIS -->
+<apex:form >
+        <apex:input type="number" label="Number of Employees" value="{!numberOfEmployees}"/>
+        <apex:commandButton value="Reset" action="{!reset}"/>
+    </apex:form>
+<!-- End Default Content REMOVE THIS -->
+</apex:page>

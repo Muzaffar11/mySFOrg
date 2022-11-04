@@ -1,0 +1,506 @@
+<template>
+  <div style="position: relative">
+    <div
+      class="slds-page-header"
+      style="padding-top: 5px; padding-bottom: 5px; margin-top: -10px">
+      <div class="slds-page-header__row">
+        <div class="slds-page-header__col-title">
+          <div class="slds-media">
+            <div class="slds-media__figure">
+              <span class="slds-icon_container slds-icon-standard-opportunity">
+                <lightning-icon
+                  size="medium"
+                  icon-name="standard:partner_fund_request"
+                  alternative-text="WorkZone"
+                  title="WorkZone"></lightning-icon>
+              </span>
+            </div>
+            <div class="slds-media__body">
+              <div class="slds-page-header__name" style="height: 100%">
+                <div class="slds-page-header__name-title">
+                  <h1>
+                    <span
+                      class="slds-page-header__title slds-truncate"
+                      title="Work Zone"
+                      >Work Zone</span>
+                  </h1>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="slds-page-header__col-actions">
+          <div class="slds-page-header__controls">
+            <div class="slds-page-header__control">
+              <ul class="slds-button-group-list" style="padding-top: 5px">
+                <template if:false={isMobileView}>
+                  <li>
+                    <template if:false={HideSearchBox}>
+                      <div class="slds-form-element">
+                        <div
+                          class="slds-form-element__control slds-input-has-icon slds-input-has-icon_left"                        >
+                          <lightning-icon  class="slds-icon slds-input__icon slds-input__icon_left slds-icon-text-default slds-p-left_small slds-p-medium_xxx-small"
+                            icon-name="utility:search" size="x-small" alternative-text="">
+                          </lightning-icon>
+                          <lightning-input data-id="txtSearch"
+                            type="text" label="Search"  variant="label-hidden" class="slds-m-horizontal_small"
+                            placeholder="Search Donor" ></lightning-input>
+                        </div>
+                      </div>
+                    </template>
+                  </li>
+
+                  <li>
+                    <lightning-button
+                      variant="Neutral"
+                      label="Search"
+                      title="Search"
+                      onclick={handleSearhClick}
+                    >
+                    </lightning-button>
+                  </li>
+                </template>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- <c-i-a-donor-detail></c-i-a-donor-detail> -->
+
+        <!--Use template if:true to display/hide popup based on isModalOpen value-->
+        <template if:true={isModalOpen}>
+          <!-- Modal/Popup Box LWC starts here -->
+          <section
+            role="dialog"
+            tabindex="-1"
+            aria-labelledby="modal-heading-01"
+            aria-modal="true"
+            aria-describedby="modal-content-id-1"
+            class="slds-modal slds-fade-in-open"
+          >
+            <div class="slds-modal__container">
+              <!-- Modal/Popup Box LWC header here -->
+              <header class="slds-modal__header">
+                <button
+                  class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                  title="Close"
+                  onclick={closeModal}
+                >
+                  <lightning-icon
+                    icon-name="utility:close"
+                    alternative-text="close"
+                    variant="inverse"
+                    size="small"
+                  ></lightning-icon>
+                  <span class="slds-assistive-text">Close</span>
+                </button>
+                <h2
+                  id="modal-heading-01"
+                  class="slds-text-heading_medium slds-hyphenate"
+                >
+                  Modal/PopUp Box header LWC
+                </h2>
+              </header>
+              <!-- Modal/Popup Box LWC body starts here -->
+              <div
+                class="slds-modal__content slds-p-around_medium"
+                id="modal-content-id-1">
+                <lightning-datatable
+                  key-field="Id"
+                  data={data}
+                  columns={columns}>
+                </lightning-datatable>
+              </div>
+              <!-- Modal/Popup Box LWC footer starts here -->
+              <footer class="slds-modal__footer">
+                <button
+                  class="slds-button slds-button_neutral"
+                  onclick={closeModal}
+                  title="Cancel">
+                  Cancel
+                </button>
+                <button
+                  class="slds-button slds-button_brand"
+                  onclick={submitDetails}
+                  title="OK">
+                  OK
+                </button>
+              </footer>
+            </div>
+          </section>
+          <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+      </div>
+    </div>
+
+    <div class="slds-grid slds-wrap slds-p-top_xx-small">
+      <div class="slds-col slds-size_1-of-1 slds-medium-size_12-of-12 slds-large-size_12-of-12 lgc-bg">
+        <lightning-card>
+          <div class="slds-section slds-is-open slds-p-horizontal_small">
+            <div class="slds-p-horizontal_x-small">
+							<h3 class="slds-section__title slds-theme_shade slds-p-around_xx-small">
+								<span class="slds-truncate slds-p-left_x-small" title="Donation Details">Donation
+									Details</span>
+							</h3>
+						</div>
+
+            <div aria-hidden="false" class="slds-section__content slds-grid slds-wrap"
+							id="DonationDetailDiv" style="padding-top: 0px;">
+
+							<div
+								class="slds-col slds-size_1-of-1 slds-medium-size_4-of-12 slds-large-size_2-of-12 slds-p-around_x-small lgc-bg">
+								<div style="display: flex;">
+									<lightning-combobox dropdown-alignment="auto" style="width:48%;" name="txtCurrency"
+										id="txtCurrency" data-id="txtCurrency" label="Ccy" required={IsRequired}
+										value={SelectedCurrency} options={CurrencyOptions} onchange={handleChange}
+										disabled={isEditMode}>
+									</lightning-combobox>
+									<lightning-input maxlength="7" min="1" max="9999999" data-id="txtAmount"
+										style="width:52%;" onblur={handleAmountBlur} name="txtAmount" id="txtAmount"
+										label="Amount" value={DonationAmount} disabled={isEditMode}
+										onchange={handleChange} required={IsRequired} type="tel"
+										pattern="[0-9]+(\.[0-9][0-9]?)?">
+									</lightning-input>
+								</div>
+							</div>
+
+
+							<div
+								class="slds-col slds-size_1-of-1 slds-medium-size_4-of-12 slds-large-size_2-of-12 slds-p-around_x-small lgc-bg">
+
+								<lightning-combobox dropdown-alignment="auto" name="cbPaymentType" id="cbPaymentType"
+									label="Payment Type" value={SelectedPaymentType} required={IsRequired}
+                  placeholder="Choose Payment"
+									options={BatchPaymentMethods} onchange={handleChange} disabled={isEditMode}>
+								</lightning-combobox>
+
+							</div>
+
+							<div class="slds-col slds-size_1-of-1 slds-medium-size_4-of-12 slds-large-size_2-of-12 slds-p-around_x-small lgc-bg">
+								<div class="slds-p-bottom_small">
+                  <lightning-combobox
+                  name="cbCampaign"
+                  label="Campaign"
+                  placeholder="Choose Campaign"
+                  value={value}
+                  onchange={handleChange}
+                  options={items}>
+              </lightning-combobox>
+								</div>
+							</div>
+							<div
+								class="slds-col slds-size_1-of-1 slds-medium-size_4-of-12 slds-large-size_2-of-12 slds-p-around_x-small lgc-bg">
+								<lightning-combobox dropdown-alignment="auto" name="cbPaidBy" id="cbPaidBy"
+									label="Through" value={SelectedPaidBy} required={IsRequired} options={PaidByOptions}
+                  placeholder="select Paid By "
+									onchange={handleChange}>
+								</lightning-combobox>
+							</div>
+							<template if:false={ShowDDDetails}>
+								<div
+									class="slds-col slds-size_1-of-1 slds-medium-size_4-of-12 slds-large-size_2-of-12 slds-p-around_x-small lgc-bg">
+
+									<lightning-input required={IsRequired} data-id="txtDonationDate"
+										name="txtDonationDate" id="txtDonationDate" label="Date" type="Date"
+										value={SelectedDonationDate} onchange={handleChange}>
+									</lightning-input>
+								</div>
+							</template>
+						</div>
+          </div>
+	<!--PAYMENT INFORMATION SECTION START-->
+    <div class="slds-section slds-is-open slds-p-horizontal_small" style="margin-top: -20px;">
+      <div aria-hidden="false" class="slds-section__content">
+          <template if:true={ShowCardDetails}>
+        <div class="slds-grid slds-wrap" id="CCDive">
+
+          <template if:false={isEditMode}>
+            <div
+              class="slds-col slds-size_1-of-1 slds-medium-size_4-of-12 slds-large-size_4-of-12 slds-p-around_x-small lgc-bg">
+              <lightning-input name="txtCardNumber" id="txtCardNumber"
+                data-id="txtCardNumber" label="Credit Card Number"
+                value={CreditCardNumber} placeholder="Credit Card Number" maxlength="16"
+                type="tel" pattern="[0-9]*" required={IsRequired}
+                onchange={handleChange} disabled={isEditMode}>
+              </lightning-input>
+            </div>
+            <div
+              class="slds-col slds-size_1-of-1 slds-medium-size_2-of-12 slds-large-size_2-of-12 slds-p-around_x-small lgc-bg">
+              <lightning-combobox dropdown-alignment="auto" name="cbCCExpiryMonth"
+                id="cbCCExpiryMonth" label="Month" placeholder="--Select--"
+                data-id="cbCCExpiryMonth" value={SelectedExpMonth} required={IsRequired}
+                options={ExpMonthOptions} onchange={handleChange} disabled={isEditMode}>
+              </lightning-combobox>
+            </div>
+            <div
+              class="slds-col slds-size_1-of-1 slds-medium-size_2-of-12 slds-large-size_2-of-12 slds-p-around_x-small lgc-bg">
+              <lightning-combobox dropdown-alignment="auto" name="cbCCExpiryYear"
+                id="cbCCExpiryYear" label="Year" placeholder="--Select--"
+                data-id="cbCCExpiryYear" value={SelectedExpYear} required={IsRequired}
+                options={ExpYearOptions} onchange={handleChange} disabled={isEditMode}>
+              </lightning-combobox>
+            </div>
+            <div
+              class="slds-col slds-size_1-of-1 slds-medium-size_2-of-12 slds-large-size_2-of-12 slds-p-around_x-small lgc-bg">
+              <div class="slds-form-element slds-p-top_medium">
+                <div class="slds-p-top_x-small">
+                  <lightning-button class="slds-button_stretch" variant="Neutral"
+                    label="Process Card2" title="Process Card" id="btnProcessCC"
+                    onclick={Process_Card_DD}>
+                  </lightning-button>
+                </div>
+              </div>
+            </div>
+          </template>
+        </div>
+        </template>
+        <template if:true={ShowDDDetails}>
+        <div class="slds-grid slds-wrap">
+          <template if:false={isEditMode}>
+            <div
+              class="slds-col slds-size_1-of-1 slds-medium-size_2-of-12 slds-large-size_2-of-12 slds-p-around_x-small lgc-bg">
+              <lightning-input maxlength="6" minlength="6" required={IsRequired}
+                name="txtDDSortCode" id="txtDDSortCode" label="Sort Code"
+                placeholder="Sort Code" value={DDSortCode} onchange={handleChange}
+                disabled={isEditMode}>
+              </lightning-input>
+            </div>
+            <div
+              class="slds-col slds-size_1-of-1 slds-medium-size_2-of-12 slds-large-size_2-of-12 slds-p-around_x-small lgc-bg">
+              <lightning-input maxlength="8" minlength="8" required={IsRequired}
+                name="txtDDAccNo" id="txtDDAccNo" label="Account No"
+                placeholder="Account No" value={DDAccNo} onchange={handleChange}
+                disabled={isEditMode}>
+              </lightning-input>
+            </div>
+          </template>
+         
+            <div class="slds-col slds-size_1-of-1 slds-medium-size_2-of-12 slds-large-size_2-of-12 slds-p-around_x-small lgc-bg">
+              <lightning-combobox dropdown-alignment="auto" name="txtDDFrequency"
+                id="txtDDFrequency" label="Frequency" value={DDSelectedFrequency}
+                required={IsRequired} options={DDFrequencyOptions}
+                onchange={handleChange} disabled={isEditMode}>
+              </lightning-combobox>
+            </div>
+            <!-- <template if:true={isSmartDebitActive}> -->
+              <!-- <div class="slds-col slds-size_1-of-1 slds-medium-size_2-of-12 slds-large-size_2-of-12 slds-p-around_x-small lgc-bg">
+                <lightning-combobox dropdown-alignment="auto" name="txtDDDate"
+                  id="txtDDDate" label="Date" value={DDSelectedDate}
+                  required={IsRequired} options={DDDateOptions}
+                  onchange={handleChange} disabled={isEditMode}>
+                </lightning-combobox>
+              </div> -->
+            <!-- </template> -->
+
+            <div class="slds-col slds-size_1-of-1 slds-medium-size_2-of-12 slds-large-size_2-of-12 slds-p-around_x-small lgc-bg">
+              <div class="slds-form-element slds-p-top_medium">
+                <div class="slds-p-top_x-small">
+                  <lightning-button class="slds-button_stretch" variant="Neutral"
+                    label="Process DD" title="Process DD" id="btnProcessDD"
+                    onclick={Process_Card_DD}>
+                  </lightning-button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </template>
+        <template if:true={ShowChequeDetails}>
+        <div class="slds-grid slds-wrap" id="Cheque_div">
+          <div
+            class="slds-col slds-size_1-of-1 slds-medium-size_4-of-12 slds-large-size_2-of-12 slds-p-around_x-small lgc-bg">
+            <lightning-input required={IsRequired} name="txtChqNo" id="txtChqNo"
+              label="Cheque No" placeholder="Cheque No" value={ChqNo}
+              onchange={handleChange}>
+            </lightning-input>
+          </div>
+          <div
+            class="slds-col slds-size_1-of-1 slds-medium-size_4-of-12 slds-large-size_2-of-12 slds-p-around_x-small lgc-bg">
+            <lightning-input required={IsRequired} name="txtChqSortCode" id="txtChqSortCode"
+              label="Sort Code" placeholder="Sort Code" value={ChqSortCode}
+              onchange={handleChange}>
+            </lightning-input>
+          </div>
+          <div
+            class="slds-col slds-size_1-of-1 slds-medium-size_4-of-12 slds-large-size_2-of-12 slds-p-around_x-small lgc-bg">
+            <lightning-input required={IsRequired} name="txtChqAccNo" id="txtChqAccNo"
+              label="Account No" placeholder="Account No" value={ChqAccNo}
+              onchange={handleChange}>
+            </lightning-input>
+          </div>
+          <div
+            class="slds-col slds-size_1-of-1 slds-medium-size_4-of-12 slds-large-size_2-of-12 slds-p-around_x-small lgc-bg">
+            <lightning-input required={IsRequired} name="txtChqAccTitle" id="txtChqAccTitle"
+              label="Account Title" placeholder="Account Title" value={ChqAccTitle}
+              onchange={handleChange}>
+            </lightning-input>
+          </div>
+        </div>
+        </template>
+     </div>
+    </div>
+    <div class="slds-section slds-is-open  slds-p-horizontal_small">
+      <div class="slds-p-horizontal_x-small">
+        <div class="slds-clearfix slds-section__title slds-theme_shade">
+          <div class="slds-float_left slds-p-around_xx-small">
+            <span class="slds-truncate slds-p-left_x-small" title="Fund Allocation">Fund
+              Allocation</span>
+          </div>
+          <div class="slds-float_right slds-p-left_small">
+            <button class="slds-button" onclick={handleFAAddClick}>Add More</button>
+          </div>
+        </div>
+      </div>
+        <div aria-hidden="false" class="slds-section__content" id="FundAllocationDiv" style="padding-top: 0px;">
+        <template for:each={FundAllocationList} for:item="FARec">
+          <div  key={FARec.SNo} class="slds-grid slds-wrap">
+            <div class="slds-col slds-size_1-of-2 slds-medium-size_2-of-12 slds-large-size_2-of-12 slds-p-around_x-small slds-p-top_small lgc-bg">
+              <lightning-input min="1" max="9999999" formatter="currency"
+                required={IsRequired} type="tel" name="txtFAAmount" label="Amount"
+                value={FARec.Amount} data-id={FARec.SNo}  onchange={fundAlloc_HandleChange}>
+              </lightning-input>
+            </div>
+            <div
+              class="slds-col slds-size_1-of-2 slds-medium-size_2-of-12 slds-large-size_2-of-12 slds-p-around_x-small slds-p-top_small lgc-bg">
+              <lightning-combobox dropdown-alignment="auto" name="txtFADonationType"
+                label="Donation Type" value={FARec.SelectedDonationType}  data-id={FARec.SNo}
+                required={IsRequired} options={DonationTypeOptions}
+                >
+              </lightning-combobox>
+            </div>
+            <div
+              class="slds-col slds-size_1-of-2 slds-medium-size_2-of-12 slds-large-size_2-of-12 slds-p-around_x-small slds-p-top_small lgc-bg">
+              <lightning-combobox dropdown-alignment="auto"
+                label="Country" data-id={FARec.SNo} value={FARec.SelectedCountry}
+                required={IsRequired} options={getCountry}
+                >
+              </lightning-combobox>
+            </div>
+            <div
+              class="slds-col slds-size_1-of-2 slds-medium-size_2-of-12 slds-large-size_2-of-12 slds-p-around_x-small slds-p-top_small lgc-bg">
+              <lightning-combobox dropdown-alignment="auto" name="txtFAProgram"
+                label="Program"  data-id={FARec.SNo} value={FARec.SelectedPBE}
+                required={IsRequired} options={FAProgramOptions}>
+                <!-- onchange={fundAlloc_HandleChange} -->
+             
+              </lightning-combobox>
+            </div>
+            <div
+              class="slds-col slds-size_1-of-2 slds-medium-size_2-of-12 slds-large-size_2-of-12 slds-p-around_x-small slds-p-top_small lgc-bg">
+              <lightning-input name="txtFAOnBehalfOf" label="On behalf"
+              value={FARec.OnBehalfOf} data-id={FARec.SNo} onchange={fundAlloc_HandleChange}>
+              </lightning-input>
+          
+            </div>
+						<template if:true={FARec.ShowDelete}>
+              <div
+                class="slds-col slds-size_1-of-2 slds-medium-size_1-of-12 slds-large-size_1-of-12 slds-p-top_medium lgc-bg">
+                <div class="slds-p-top_small">
+                  <lightning-button-icon icon-name="utility:delete"
+                    alternative-text="Delete" title="Delete" data-id={FARec.SNo}
+                    onclick={handleFADeleteClick}></lightning-button-icon>
+                </div>
+              </div>
+            </template>
+
+          </div>
+        </template>
+      </div>
+     </div>
+
+    <!-- Email and Mobile DETAILS-->
+      <div class="slds-col slds-size_1-of-1 slds-medium-size_6-of-12 slds-large-size_6-of-12 lgc-bg">
+       <div class="slds-section slds-is-open slds-p-horizontal_small">
+        <div class="slds-p-horizontal_x-small">
+          <h3 class="slds-section__title slds-theme_shade slds-p-around_xx-small">
+            <span class="slds-truncate slds-p-left_x-small" title="Contact Details">Contact
+              Details</span>
+          </h3>
+        </div>
+
+        <div aria-hidden="false" class="slds-section__content" style="padding-top: 0px;">
+
+          <div class="slds-grid slds-wrap">
+            <div
+              class="slds-col slds-size_1-of-2 slds-medium-size_6-of-12 slds-large-size_6-of-12 slds-p-around_x-small lgc-bg">
+              <lightning-input data-id="txtEmail1" name="txtEmail1" label="Email"
+                  disabled={DisableDonorFields} type="email" value={txtEmail1}
+                  max-length="40"
+                  onchange={handleChange} onblur={handleEmailBlur}></lightning-input>
+              <template if:true={IsEmailNotvalid}>
+                  <p style="color:#c23934; font-size:12px"> Please Enter Valid Email </p>
+              </template>
+            </div>
+            <div
+              class="slds-col slds-size_1-of-2 slds-medium-size_6-of-12 slds-large-size_6-of-12 slds-p-around_x-small lgc-bg">
+              <lightning-input name="txtMobile1" label="Mobile"
+                disabled={DisableDonorFields} type="tel" value={txtMobile1}
+                onchange={handleChange}></lightning-input>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- OPT OUT DETAILS START -->
+     <div class="slds-section slds-is-open slds-p-horizontal_small">
+       <div class="slds-p-horizontal_x-small">
+         <h3 class="slds-section__title slds-theme_shade slds-p-around_xx-small">
+            <span class="slds-truncate slds-p-left_x-small" title="Opt Out Details">Opt Outs</span>
+              <span class="slds-p-left_large">
+                <template if:true={isDonorSelected}>
+                  <template if:false={DisableDonorFields}>
+                    <button class="slds-button" onclick={handleOptOutEdit}>Edit</button>
+                  </template>
+                </template>
+              </span>
+            </h3>
+          </div>
+        
+          <div class="slds-section__content" style="padding-top: 5px;">
+            <div class="slds-grid slds-wrap">
+              <div
+                class="slds-col slds-size_1-of-2 slds-medium-size_3-of-12 slds-large-size_3-of-12 slds-p-around_x-small lgc-bg">
+                <!--disabled={DisableDonorFields}-->
+                <lightning-input name="txtPostOptOut" label="Post" 
+                  type="checkbox" checked={txtPostOptOut} onchange={handleChange}>
+                </lightning-input>
+              </div>
+              <div
+                class="slds-col slds-size_1-of-2 slds-medium-size_3-of-12 slds-large-size_3-of-12 slds-p-around_x-small lgc-bg">
+                <!--disabled={DisableDonorFields}-->
+                <lightning-input name="txtEmailOptOut" label="Email" 
+                  type="checkbox" checked={txtEmailOptOut} onchange={handleChange}>
+                </lightning-input>
+              </div>
+              <div
+                class="slds-col slds-size_1-of-2 slds-medium-size_3-of-12 slds-large-size_3-of-12 slds-p-around_x-small lgc-bg">
+                <!--disabled={DisableDonorFields}-->
+                <lightning-input name="txtSmsOptOut" label="SMS" type="checkbox"
+                  checked={txtSmsOptOut} onchange={handleChange}></lightning-input>
+              </div>
+              <div
+                class="slds-col slds-size_1-of-2 slds-medium-size_3-of-12 slds-large-size_3-of-12 slds-p-around_x-small lgc-bg">
+                <!--disabled={DisableDonorFields}-->
+                <lightning-input name="txtReceiptOptOut" label="Receipt" 
+                  type="checkbox" checked={txtReceiptOptOut} onchange={handleChange}>
+                </lightning-input>
+              </div>
+            </div>
+
+          </div>
+        </div>
+							<!-- OPT OUT DETAILS END -->
+
+        <div class="slds-col slds-size_1-of-1 slds-medium-size_5-of-12 slds-large-size_5-of-12">
+          <!--<button type="button" class="slds-button slds-button_neutral" >Cancel</button>-->
+          <div class={ClassCenter}>
+            <button type="button" class="slds-button slds-button_neutral"
+              onclick={HandleCancel}>Refresh</button>
+            <button type="button" class="slds-button slds-button_brand"
+              onclick={SaveDonation}>Save</button>
+          </div>
+        </div>
+        </lightning-card>
+      </div>
+    </div>
+</div>
+</template>

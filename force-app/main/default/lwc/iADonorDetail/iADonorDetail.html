@@ -1,0 +1,44 @@
+<template>
+  <div style="background-color: white; position: relative">
+    <div class="slds-section slds-is-open forSection">
+      <span
+        class="slds-truncate slds-p-horizontal_small" title="Contact Details">Contact Details
+      </span>
+
+      <div aria-hidden="false" class="slds-section__content" id="DonorDetailsDiv">
+        <div class="slds-p-horizontal_x-small">
+          <template if:true={contactDetail}>
+            <label class="slds-form-element__label">Name:</label>
+            <lightning-formatted-text value={contactDetail.FirstName}></lightning-formatted-text>
+            &nbsp;
+            <lightning-formatted-text value={contactDetail.LastName}></lightning-formatted-text>
+          </template>
+        </div>
+        <div class="slds-p-horizontal_x-small">
+         <label class="slds-form-element__label">Address:</label>
+         <lightning-formatted-text value={contactDetail.MailingStreet}></lightning-formatted-text>
+          &nbsp;
+         <lightning-formatted-text value={contactDetail.MailingCity}></lightning-formatted-text>
+         &nbsp;
+         <lightning-formatted-text value={contactDetail.MailingState}></lightning-formatted-text>
+         &nbsp;
+         <lightning-formatted-text value={contactDetail.MailingPostalCode}></lightning-formatted-text>
+         
+        </div>
+        <div class="slds-p-horizontal_x-small">
+            <label class="slds-form-element__label">Mobile :</label>
+            <lightning-formatted-text value={contactDetail.MobilePhone}></lightning-formatted-text>
+        </div>
+        <div class="slds-p-horizontal_x-small">
+            <label class="slds-form-element__label">Email :</label>
+            <lightning-formatted-text value={contactDetail.Email}></lightning-formatted-text>
+        </div>
+        <div class="slds-p-horizontal_x-small">
+            <label class="slds-form-element__label">Department :</label>
+            <lightning-formatted-text value={contactDetail.Department}></lightning-formatted-text>
+        </div>
+        
+    </div>
+    </div>
+  </div>
+</template>
